@@ -1,11 +1,594 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scrum</title>
+    <title>Scrum Hub - O Guia Ágil Definitivo</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --card-bg: #1e293b;
+            --success: #34d399;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header & Nav */
+        header {
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem 2rem;
+            background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.1), transparent 40%);
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            padding: 0.75rem 1.7rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.2);
+        }
+
+        /* Container global */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background-color: var(--accent);
+            margin: 0.5rem auto 0 auto;
+            border-radius: 2px;
+        }
+
+        /* Pilares / Grid */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+        }
+
+        /* Scrum Board Interativo */
+        .board-container {
+            background-color: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .board-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .board-input {
+            flex: 1;
+            min-width: 200px;
+            background-color: var(--bg-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .board-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .board-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .column {
+            background-color: rgba(15, 23, 42, 0.5);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .column-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .task-count {
+            background-color: var(--bg-secondary);
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .task-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .task-card {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: grab;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .task-card:active {
+            cursor: grabbing;
+        }
+
+        .task-card p {
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.1rem;
+            line-height: 1;
+            padding: 0 0.2rem;
+        }
+
+        .btn-delete:hover {
+            color: #f87171;
+        }
+
+        .drag-over {
+            background-color: rgba(56, 189, 248, 0.05);
+            border: 2px dashed var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0b0f19;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-menu { display: none; }
+            .grid-3 { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Scrum muito louco</h1>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">🚀 Scrum<span>Hub</span></a>
+            <ul class="nav-menu">
+                <li><a href="#pilares" class="active">Pilares</a></li>
+                <li><a href="#papeis">Papéis</a></li>
+                <li><a href="#board">Simulador</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Domine o <span>Scrum</span> e Entregue Valor Mais Rápido</h1>
+            <p>Descubra a estrutura ágil mais utilizada no mundo para gerenciar projetos complexos, aumentar a produtividade e integrar times de alta performance.</p>
+            <a href="#board" class="btn">Testar Simulador de Board</a>
+        </div>
+    </section>
+
+    <section id="pilares" class="container">
+        <h2 class="section-title">Os 3 Pilares do Scrum</h2>
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-icon">👁️</div>
+                <h3>Transparência</h3>
+                <p>Todos os aspectos do processo que influenciam o resultado devem ser visíveis aos responsáveis pelos resultados. Informações claras e compartilhadas evitam surpresas.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔍</div>
+                <h3>Inspeção</h3>
+                <p>Os usuários do Scrum devem inspecionar frequentemente os artefatos e o progresso em direção ao objetivo do Sprint para detectar variações indesejadas.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <h3>Adaptação</h3>
+                <p>Se um processo ou produto desviar dos limites aceitáveis, o processo ou os materiais produzidos devem ser ajustados imediatamente para minimizar novos desvios.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="papeis" class="container" style="background-color: rgba(255,255,255,0.01); border-radius: 1.5rem;">
+        <h2 class="section-title">Papéis do Scrum Team</h2>
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-icon">👑</div>
+                <h3>Product Owner</h3>
+                <p>O dono do produto. Maximiza o valor do produto resultante do trabalho do Scrum Team. É o único responsável pelo gerenciamento do Product Backlog.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🛡️</div>
+                <h3>Scrum Master</h3>
+                <p>O líder servidor. Responsável por estabelecer o Scrum conforme definido no Guia do Scrum, ajudando todos a entenderem a teoria e a prática do framework.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">💻</div>
+                <h3>Developers</h3>
+                <p>As pessoas do Scrum Team que estão comprometidas em criar qualquer aspecto de um Incremento útil a cada Sprint, possuindo todas as habilidades necessárias.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="board" class="container">
+        <h2 class="section-title">Simulador de Scrum Board</h2>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Adicione tarefas e use a dinâmica de arrastar e soltar (Drag and Drop) para simular o fluxo de um Sprint real.</p>
+        
+        <div class="board-container">
+            <div class="board-controls">
+                <input type="text" id="task-input" class="board-input" placeholder="Digite uma nova história ou tarefa...">
+                <button id="add-task-btn" class="btn">Adicionar Item</button>
+            </div>
+
+            <div class="board-columns">
+                <!-- Product Backlog -->
+                <div class="column" data-status="backlog">
+                    <div class="column-header">
+                        <span class="column-title">Product Backlog</span>
+                        <span class="task-count" id="count-backlog">0</span>
+                    </div>
+                    <div class="task-list" id="list-backlog"></div>
+                </div>
+
+                <!-- Sprint Backlog -->
+                <div class="column" data-status="sprint">
+                    <div class="column-header">
+                        <span class="column-title">Sprint Backlog</span>
+                        <span class="task-count" id="count-sprint">0</span>
+                    </div>
+                    <div class="task-list" id="list-sprint"></div>
+                </div>
+
+                <!-- In Progress -->
+                <div class="column" data-status="progress">
+                    <div class="column-header">
+                        <span class="column-title">In Progress</span>
+                        <span class="task-count" id="count-progress">0</span>
+                    </div>
+                    <div class="task-list" id="list-progress"></div>
+                </div>
+
+                <!-- Done -->
+                <div class="column" data-status="done">
+                    <div class="column-header">
+                        <span class="column-title">Done</span>
+                        <span class="task-count" id="count-done">0</span>
+                    </div>
+                    <div class="task-list" id="list-done"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Scrum Hub Inc. Criado de forma ágil para desenvolvedores modernos.</p>
+    </footer>
+
+    <script>
+        // Gerenciamento do Estado do Kanban
+        const taskInput = document.getElementById('task-input');
+        const addTaskBtn = document.getElementById('add-task-btn');
+        const lists = {
+            backlog: document.getElementById('list-backlog'),
+            sprint: document.getElementById('list-sprint'),
+            progress: document.getElementById('list-progress'),
+            done: document.getElementById('list-done')
+        };
+        const counts = {
+            backlog: document.getElementById('count-backlog'),
+            sprint: document.getElementById('count-sprint'),
+            progress: document.getElementById('count-progress'),
+            done: document.getElementById('count-done')
+        };
+
+        // Carregar do LocalStorage ou iniciar padrão
+        let tasks = JSON.parse(localStorage.getItem('scrum_tasks')) || [
+            { id: '1', text: 'Criar wireframe da landing page', status: 'backlog' },
+            { id: '2', text: 'Configurar repositório Git e CI/CD', status: 'sprint' },
+            { id: '3', text: 'Desenvolver a seção de pilares com CSS Grid', status: 'progress' },
+            { id: '4', text: 'Definir escopo inicial do produto', status: 'done' }
+        ];
+
+        // Inicializar aplicação
+        function init() {
+            renderTasks();
+            setupDragAndDrop();
+        }
+
+        // Renderizar elementos na tela
+        function renderTasks() {
+            // Limpar listas
+            Object.values(lists).forEach(list => list.innerHTML = '');
+            
+            // Contadores
+            const currentCounts = { backlog: 0, sprint: 0, progress: 0, done: 0 };
+
+            tasks.forEach(task => {
+                currentCounts[task.status]++;
+                
+                const taskCard = document.createElement('div');
+                taskCard.classList.add('task-card');
+                taskCard.setAttribute('draggable', 'true');
+                taskCard.setAttribute('data-id', task.id);
+                
+                taskCard.innerHTML = `
+                    <p>${task.text}</p>
+                    <button class="btn-delete" onclick="deleteTask('${task.id}')">&times;</button>
+                `;
+                
+                lists[task.status].appendChild(taskCard);
+            });
+
+            // Atualizar UI dos contadores
+            Object.keys(counts).forEach(status => {
+                counts[status].textContent = currentCounts[status];
+            });
+
+            saveToStorage();
+        }
+
+        // Adicionar Nova Tarefa
+        function addTask() {
+            const text = taskInput.value.trim();
+            if (!text) return;
+
+            const newTask = {
+                id: Date.now().toString(),
+                text: text,
+                status: 'backlog'
+            };
+
+            tasks.push(newTask);
+            taskInput.value = '';
+            renderTasks();
+            setupDragAndDrop(); // Re-vincula eventos para novos cards
+        }
+
+        // Deletar Tarefa
+        window.deleteTask = function(id) {
+            tasks = tasks.filter(task => task.id !== id);
+            renderTasks();
+            setupDragAndDrop();
+        };
+
+        // Configuração Drag and Drop API
+        let draggedItemId = null;
+
+        function setupDragAndDrop() {
+            const cards = document.querySelectorAll('.task-card');
+            const columns = document.querySelectorAll('.column');
+
+            cards.forEach(card => {
+                card.addEventListener('dragstart', () => {
+                    draggedItemId = card.getAttribute('data-id');
+                    setTimeout(() => card.style.opacity = '0.5', 0);
+                });
+
+                card.addEventListener('dragend', () => {
+                    setTimeout(() => card.style.opacity = '1', 0);
+                    draggedItemId = null;
+                });
+            });
+
+            columns.forEach(column => {
+                column.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    column.classList.add('drag-over');
+                });
+
+                column.addEventListener('dragleave', () => {
+                    column.classList.remove('drag-over');
+                });
+
+                column.addEventListener('drop', () => {
+                    column.classList.remove('drag-over');
+                    if (draggedItemId) {
+                        const targetStatus = column.getAttribute('data-status');
+                        const taskIndex = tasks.findIndex(t => t.id === draggedItemId);
+                        if (taskIndex !== -1) {
+                            tasks[taskIndex].status = targetStatus;
+                            renderTasks();
+                            setupDragAndDrop();
+                        }
+                    }
+                });
+            });
+        }
+
+        // Salvar localmente
+        function saveToStorage() {
+            localStorage.setItem('scrum_tasks', JSON.stringify(tasks));
+        }
+
+        // Eventos de clique e Enter
+        addTaskBtn.addEventListener('click', addTask);
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTask();
+        });
+
+        // Executa ao carregar
+        init();
+    </script>
 </body>
 </html>
